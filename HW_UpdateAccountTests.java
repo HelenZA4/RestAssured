@@ -2,13 +2,16 @@ package ru.academits.mantis;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import java.security.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
 public class HW_UpdateAccountTests {
     private String PHPSESSID;
     private String MANTIS_secure_session;
@@ -50,18 +53,19 @@ public class HW_UpdateAccountTests {
         response.prettyPrint();
 
         assertEquals(200, response.statusCode(), "Response status code is not as expected");
-        assertTrue(response.body().asString().contains("Real Name"));
+        assertTrue(response.body().asString().  contains("Real Name"));
     }
 
     @Test
     public void updateRealNameTest() {
-        String newRealName = "New Real Name";
+        long currentTimestamp = System.currentTimeMillis();
+        String newRealName = "new_real_name_" + currentTimestamp;
 
         Response responseUpdateRealName = RestAssured
                 .given()
                 .contentType("application/x-www-form-urlencoded")
                 .cookies(cookies)
-                .body("realname = " + newRealName)
+                .body("password_current=&password=&password_confirm=&email=rovan3014%40mail.ru&realname=" + newRealName)
                 .post("https://academ-it.ru/mantisbt/account_update.php")
                 .andReturn();
 
