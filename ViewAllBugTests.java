@@ -2,12 +2,12 @@ package ru.academits.mantis;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ViewAllBugTests {
     private String PHPSESSID;
@@ -55,7 +55,7 @@ public class ViewAllBugTests {
 
     @Test
     public void updateBugStatusTest () {
-        String bugId = "20020";
+        String bugId = "20022";
 
         Response responseUpdateBug = RestAssured
                 .given()
@@ -68,7 +68,7 @@ public class ViewAllBugTests {
         System.out.println("\nResponse:");
         responseUpdateBug.prettyPrint();
 
-        assertEquals(200,responseUpdateBug.statusCode(), "Response status code is not as expected");
+        assertEquals(302,responseUpdateBug.statusCode(), "Response status code is not as expected");
 
         Response responseViewBug = RestAssured
                 .given()
@@ -77,7 +77,7 @@ public class ViewAllBugTests {
                 .andReturn();
 
         assertEquals(200,responseViewBug.statusCode(), "Response status code is not as expected");
-        org.junit.jupiter.api.Assertions.assertTrue(responseViewBug.body().asString()
+        assertTrue(responseViewBug.body().asString()
                 .contains("Status</th><td class=\"bug-status\"><i class=\"fa fa-square fa-status-box status-50-color\"></i> assigned"));
     }
 }
